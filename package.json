@@ -1,0 +1,30 @@
+{
+  "name": "hielera_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.12.2",
+    "mysql2": "^2.3.0",
+    "sequelize": "^6.6.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidGeovanny/hielera_backend.git"
+  },
+  "author": "David Geovanny",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidGeovanny/hielera_backend/issues"
+  },
+  "homepage": "https://github.com/davidGeovanny/hielera_backend#readme"
+}
