@@ -1,0 +1,44 @@
+{
+	"info": {
+		"_postman_id": "421ebbad-f17f-4a80-bbb9-9b3bda0363d5",
+		"name": "hielera-backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get sales",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth",
+						"value": "6+oa9lqNGgXVq4fvrwFiZcXrSw==",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/sales/?initDate=2021-09-01&finalDate=2021-09-30",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"sales",
+						""
+					],
+					"query": [
+						{
+							"key": "initDate",
+							"value": "2021-09-01"
+						},
+						{
+							"key": "finalDate",
+							"value": "2021-09-30"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
