@@ -10,13 +10,14 @@ const getSales = async ( req = request, res = response ) => {
 
     res.json({
       ok: true,
-      sales: sales.slice(0, 100)
+      // sales: sales.slice(0, 100)
+      sales,
     });
   } catch ( err ) {
     res.status(400).json({
       ok: false,
       msg: 'An error has ocurred',
-      errors: err
+      err
     });
   }
 }

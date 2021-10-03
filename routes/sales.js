@@ -1,9 +1,9 @@
 const { Router } = require('express');
 
 const { validateKey, checkValidityFields } = require('../middlewares');
+const { saleGetRules } = require('../rules/sale-rules');
 
 const { getSales } = require('../controllers/sales');
-const { saleGetRules } = require('../rules/sale-rules');
 
 const router = Router();
 

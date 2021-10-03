@@ -10,21 +10,22 @@ class SalesWithDetail {
     /** Take care not print in window or postman, because displaying all raws can be resource intensive  */
     return db.query(`
       SELECT 
-        s.Sucursal,
-        IFNULL(c.Razon_Social, CONCAT(c.Nombre, ' ', c.Apellido_Paterno, ' ', c.Apellido_Materno)) AS Cliente,
-        pe.Clave AS Clave_Punto_Entrega,
-        pe.Nombre AS Punto_Entrega,
-        ru.Nombre_Ruta,
-        r.Folio AS Folio_Remision,
-        DATE_FORMAT(CONCAT(r.Fecha, ' ', r.Hora_Entrega), "%d-%m-%Y %H:%i:%s") AS Fecha,
-        IF(r.Estado = 1, 'Crédito', 'Contado') AS Forma_Pago,
-        p.Producto,
-        pr.Precio AS Precio_Original,
-        rd.Cantidad,
-        IF(rd.Tipo_Descuento = 0, 'Descuento', IF(rd.Tipo_Descuento = 1, 'Sobreprecio', 'NA')) AS Tipo_Modificacion,
-        rd.Descuento AS Precio_Modificado,
-        (IF((r.Tipo IN (1, 7, 8, 9)), IF(rd.Tipo_Descuento = 0, pr.Precio - rd.Descuento, IF(rd.Tipo_Descuento = 1, pr.Precio + rd.Descuento, pr.Precio)), 0)) * rd.Cantidad AS Precio_Final,
-        IF(rd.Bonificacion = 1, 'Sí', 'No') AS Bonificacion
+        s.Sucursal AS branch_company,
+        IFNULL(c.Razon_Social, CONCAT(c.Nombre, ' ', c.Apellido_Paterno, ' ', c.Apellido_Materno)) AS client,
+        pe.Clave AS delivery_point_key,
+        pe.Nombre AS delivery_point,
+        ru.Nombre_Ruta AS route_name,
+        r.Folio AS sales_folio,
+        r.Fecha AS date,
+        r.Hora_Entrega AS hour,
+        IF(r.Estado = 1, 'credit payment', 'cash payment') AS payment_method,
+        p.Producto AS product,
+        pr.Precio AS original_price,
+        rd.Cantidad AS quantity,
+        IF(rd.Tipo_Descuento = 0, 'discount', IF(rd.Tipo_Descuento = 1, 'over price', 'without changes')) AS type_modification,
+        rd.Descuento AS modified_price,
+        (IF((r.Tipo IN (1, 7, 8, 9)), IF(rd.Tipo_Descuento = 0, pr.Precio - rd.Descuento, IF(rd.Tipo_Descuento = 1, pr.Precio + rd.Descuento, pr.Precio)), 0)) * rd.Cantidad AS final_price,
+        rd.Bonificacion AS bonification
       FROM Remisiones r
       INNER JOIN Clientes c
         ON c.Id_Cliente = r.Id_Cliente
