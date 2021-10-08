@@ -18,7 +18,7 @@ class SalesWithDetail {
         r.Folio AS sales_folio,
         r.Fecha AS date,
         r.Hora_Entrega AS hour,
-        IF(r.Estado = 1, 'credit payment', 'cash payment') AS payment_method,
+        IF(r.Id_Forma_Pago = 1, 'cash payment', 'credit payment') AS payment_method,
         p.Producto AS product,
         pr.Precio AS original_price,
         rd.Cantidad AS quantity,
