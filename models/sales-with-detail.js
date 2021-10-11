@@ -15,11 +15,15 @@ class SalesWithDetail {
         pe.Clave AS delivery_point_key,
         pe.Nombre AS delivery_point,
         ru.Nombre_Ruta AS route_name,
+        tp2.Tipo_Producto AS type_route,
+        CONCAT(e_operator.Nombre, ' ', e_operator.Paterno, ' ', e_operator.Materno) AS operator,
+	      CONCAT(e_assistant.Nombre, ' ', e_assistant.Paterno, ' ', e_assistant.Materno) AS assistant,
         r.Folio AS sales_folio,
         r.Fecha AS date,
         r.Hora_Entrega AS hour,
         IF(r.Id_Forma_Pago = 1, 'cash payment', 'credit payment') AS payment_method,
         p.Producto AS product,
+        tp.Tipo_Producto AS type_product,
         pr.Precio AS original_price,
         rd.Cantidad AS quantity,
         IF(rd.Tipo_Descuento = 0, 'discount', IF(rd.Tipo_Descuento = 1, 'over price', 'without changes')) AS type_modification,
@@ -33,6 +37,12 @@ class SalesWithDetail {
         ON pe.Id_Punto_Entrega = r.Id_Punto_Entrega
       INNER JOIN Rutas_Equipos_Operadores reo
         ON reo.id_Ruta_Equipo_Operador = r.Id_Ruta_Equipo_Operador
+      INNER JOIN Equipos_Operadores eo
+        ON eo.Id_Equipo_Operador = reo.Id_Equipo_Operador
+      INNER JOIN Empleados e_operator
+        ON e_operator.Id_Empleado = eo.Id_Operador
+      LEFT JOIN Empleados e_assistant
+        ON e_assistant.Id_Empleado = eo.Id_Ayudante
       INNER JOIN Rutas ru
         ON ru.Id_Ruta = reo.Id_Ruta
       INNER JOIN Sucursales s
@@ -43,6 +53,10 @@ class SalesWithDetail {
         ON p.Id_Producto = rd.Id_Producto
       INNER JOIN Precios pr
         ON pr.Id_Precio = rd.Id_Precio_Producto
+      INNER JOIN Tipos_Producto tp
+        ON tp.Id_Tipo_Producto = p.Id_Tipo_Producto
+      INNER JOIN Tipos_Producto tp2
+        ON tp2.Id_Tipo_Producto = ru.Id_Tipo_Producto
       WHERE r.BanEliminar = 0
         AND rd.BanEliminar = 0
         AND pr.Id_Sucursal = r.Id_Sucursal
