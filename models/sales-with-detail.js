@@ -15,7 +15,6 @@ class SalesWithDetail {
         pe.Clave AS delivery_point_key,
         pe.Nombre AS delivery_point,
         ru.Nombre_Ruta AS route_name,
-        tp2.Tipo_Producto AS type_route,
         CONCAT(e_operator.Nombre, ' ', e_operator.Paterno, ' ', e_operator.Materno) AS operator,
 	      CONCAT(e_assistant.Nombre, ' ', e_assistant.Paterno, ' ', e_assistant.Materno) AS assistant,
         r.Folio AS sales_folio,
@@ -55,8 +54,6 @@ class SalesWithDetail {
         ON pr.Id_Precio = rd.Id_Precio_Producto
       INNER JOIN Tipos_Producto tp
         ON tp.Id_Tipo_Producto = p.Id_Tipo_Producto
-      INNER JOIN Tipos_Producto tp2
-        ON tp2.Id_Tipo_Producto = ru.Id_Tipo_Producto
       WHERE r.BanEliminar = 0
         AND rd.BanEliminar = 0
         AND pr.Id_Sucursal = r.Id_Sucursal
