@@ -25,6 +25,7 @@ class SalesWithDetail {
         tp.Tipo_Producto AS type_product,
         pr.Precio AS original_price,
         rd.Cantidad AS quantity,
+        p.Cantidad_Rendimiento AS yield,
         IF(rd.Tipo_Descuento = 0, 'discount', IF(rd.Tipo_Descuento = 1, 'over price', 'without changes')) AS type_modification,
         rd.Descuento AS modified_price,
         (IF((r.Tipo IN (1, 7, 8, 9)), IF(rd.Tipo_Descuento = 0, pr.Precio - rd.Descuento, IF(rd.Tipo_Descuento = 1, pr.Precio + rd.Descuento, pr.Precio)), 0)) * rd.Cantidad AS final_price,
