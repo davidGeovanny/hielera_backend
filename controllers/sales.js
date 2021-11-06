@@ -14,6 +14,7 @@ const getSales = async ( req = request, res = response ) => {
       sales,
     });
   } catch ( err ) {
+    console.log( err )
     res.status(400).json({
       ok: false,
       msg: 'An error has ocurred',
