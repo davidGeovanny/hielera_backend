@@ -9,7 +9,7 @@ class SalesWithDetail {
     return db.query(`
       SELECT 
         s.Sucursal AS branch_company,
-        clean_spaces(IFNULL(c.Razon_Social, CONCAT(c.Nombre, ' ', c.Apellido_Paterno, ' ', c.Apellido_Materno))) AS CLIENT,
+        clean_spaces(IFNULL(c.Razon_Social, CONCAT(c.Nombre, ' ', c.Apellido_Paterno, ' ', c.Apellido_Materno))) AS client,
         pe.Clave AS delivery_point_key,
         pe.Nombre AS delivery_point,
         ru.Nombre_Ruta AS route_name,
@@ -72,7 +72,6 @@ class SalesWithDetail {
         AND IF(e_helper.Id_Empleado, e_helper.Activo = 1, TRUE)
         AND IF(e_helper.Id_Empleado, e_helper.BanEliminar = 0, TRUE)
         AND ru.Nombre_Ruta NOT LIKE '%PISO%'
-      ORDER BY r.Id_Sucursal, r.Fecha, r.Id_Cliente, rd.Id_Remision_Detalle
     `, {
       replacements: {
         initDate,
