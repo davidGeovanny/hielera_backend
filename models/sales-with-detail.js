@@ -72,7 +72,6 @@ class SalesWithDetail {
         AND IF(e_helper.Id_Empleado, e_helper.Activo = 1, TRUE)
         AND IF(e_helper.Id_Empleado, e_helper.BanEliminar = 0, TRUE)
         AND ru.Nombre_Ruta NOT LIKE '%PISO%'
-      ORDER BY r.Id_Sucursal, r.Fecha, r.Id_Cliente, rd.Id_Remision_Detalle
     `, {
       replacements: {
         initDate,
