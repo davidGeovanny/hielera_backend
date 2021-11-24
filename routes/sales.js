@@ -9,7 +9,7 @@ const router = Router();
 
 router.get('/', [
   validateKey,
-  cache( 300 ),
+  // cache( 300 ),
   ...saleGetRules,
   checkValidityFields
 ], getSales);
