@@ -8,7 +8,8 @@ class Server {
     this.port = process.env.PORT || 8080;
 
     this.paths = {
-      sale: '/api/sales',
+      cache: '/api/cache',
+      sale:  '/api/sales',
     };
 
     /** DB connection */
@@ -38,7 +39,8 @@ class Server {
   }
   
   routes() {
-    this.app.use( this.paths.sale, require('../routes/sales') );
+    this.app.use( this.paths.cache, require('../routes/cache') );
+    this.app.use( this.paths.sale,  require('../routes/sales') );
   }
   
   listen() {

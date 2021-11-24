@@ -1,5 +1,6 @@
 const { response, request } = require('express');
 const Sales = require('../models/sales-with-detail');
+
 const { GET_CACHE, SET_CACHE } = require('../helpers/cache');
 
 const getSales = async ( req = request, res = response ) => {
@@ -32,7 +33,7 @@ const getSales = async ( req = request, res = response ) => {
     });
   } catch ( err ) {
     console.log( err );
-    res.status(400).json({
+    return res.status(400).json({
       ok:  false,
       msg: 'An error has ocurred',
       err

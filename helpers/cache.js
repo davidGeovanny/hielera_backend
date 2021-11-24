@@ -36,7 +36,24 @@ const SET_CACHE = ( key, data, time = CACHE_TIME_DEFAULT ) => {
   }
 }
 
+/**
+ * Delete a cached item or all cached items.
+ * @param { string | undefined } key Cache identified name.
+ */
+const CLEAR_CACHE = ( key ) => {
+  try {
+    if( key ) {
+      mcache.del( `__hielera-backend__${ key }` );
+    } else {
+      mcache.clear();
+    }
+  } catch ( err ) {
+    console.log( err );
+  }
+}
+
 module.exports = {
   GET_CACHE,
   SET_CACHE,
+  CLEAR_CACHE,
 };
