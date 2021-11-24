@@ -6,13 +6,13 @@ const checkValidityFields = ( req, res = response, next ) => {
 
   if( !errors.isEmpty() ) {
     return res.status(400).json({
-      ok: false,
-      msg: 'An error has ocurred',
+      ok:     false,
+      msg:    'An error has ocurred',
       errors: errors.errors.map( error => {
         return {
-          attr  : error.param,
-          value : error.value | '',
-          msg   : error.msg
+          attr:  error.param,
+          value: error.value | '',
+          msg:   error.msg
         };
       })
     });

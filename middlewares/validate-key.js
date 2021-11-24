@@ -5,22 +5,22 @@ const validateKey = ( req = request, res = response, next ) => {
 
   if( !key ) {
     return res.status(401).json({
-      ok: false,
+      ok:  false,
       msg: 'Key not valid',
       errors: {
         name: 'ValidationKeyError',
-        msg: 'There is no key in the request'
+        msg:  'There is no key in the request'
       }
     });
   }
 
   if( key !== process.env.SECRETAUTHKEY ) {
     return res.status(401).json({
-      ok: false,
+      ok:   false,
       msg: 'Key not valid',
       errors: {
         name: 'ValidationKeyError',
-        msg: 'The key is not valid'
+        msg:  'The key is not valid'
       }
     });
   }

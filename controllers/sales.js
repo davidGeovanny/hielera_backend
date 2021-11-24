@@ -1,35 +1,39 @@
 const { response, request } = require('express');
 const Sales = require('../models/sales-with-detail');
-const mcache = require('memory-cache');
+const { GET_CACHE, SET_CACHE } = require('../helpers/cache');
 
 const getSales = async ( req = request, res = response ) => {
-
-  const { initDate, finalDate } = req.query;
+  const { initDate, finalDate, employees } = req.query;
+  const key = req.originalUrl;
 
   try {
-    const key   = `__hielera-backend__${ req.originalUrl }`;
-    const reply = mcache.get( key );
+    let sales = JSON.parse( GET_CACHE( key ) );
 
-    let sales;
+    if( sales ) {
+      return res.json({
+        ok: true,
+        sales,
+      });
+    }
 
-    if( reply ) {
-      sales = reply;
+    if( !!employees ) {
+      const [ data, metadata ] = await Sales.getSalesWithEmployees( initDate, finalDate );
+      sales = data;
     } else {
       const [ data, metadata ] = await Sales.getSales( initDate, finalDate );
       sales = data;
-
-      mcache.put( key, data, 6000 * 1000 );
     }
 
-    res.json({
+    SET_CACHE( key, JSON.stringify( sales ) );
+    
+    return res.json({
       ok: true,
-      // sales: sales.slice(0, 100)
       sales,
     });
   } catch ( err ) {
-    console.log( err )
+    console.log( err );
     res.status(400).json({
-      ok: false,
+      ok:  false,
       msg: 'An error has ocurred',
       err
     });

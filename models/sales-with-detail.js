@@ -4,7 +4,7 @@ const { QueryTypes } = require('sequelize');
 class SalesWithDetail {
   constructor() { }
   
-  getSales( initDate = '2021-11-03', finalDate = '2021-11-03' ) {
+  getSalesWithEmployees( initDate = '2021-11-03', finalDate = '2021-11-03' ) {
     /** Take care not print in window or postman, because displaying all raws can be resource intensive  */
     return db.query(`
       SELECT 
@@ -71,7 +71,6 @@ class SalesWithDetail {
         AND IF(e_assistant.Id_Empleado, e_assistant.BanEliminar = 0, TRUE)
         AND IF(e_helper.Id_Empleado, e_helper.Activo = 1, TRUE)
         AND IF(e_helper.Id_Empleado, e_helper.BanEliminar = 0, TRUE)
-        AND ru.Nombre_Ruta NOT LIKE '%PISO%'
     `, {
       replacements: {
         initDate,
@@ -81,7 +80,7 @@ class SalesWithDetail {
     });
   }
 
-  getSales_legacy( initDate = '2021-11-03', finalDate = '2021-11-03' ) {
+  getSales( initDate = '2021-11-03', finalDate = '2021-11-03' ) {
     /** Take care not print in window or postman, because displaying all raws can be resource intensive  */
     return db.query(`
       SELECT 
@@ -90,9 +89,6 @@ class SalesWithDetail {
         pe.Clave AS delivery_point_key,
         pe.Nombre AS delivery_point,
         ru.Nombre_Ruta AS route_name,
-        clean_spaces(CONCAT(e_operator.Nombre, ' ', e_operator.Paterno, ' ', e_operator.Materno)) AS operator,
-        clean_spaces(CONCAT(e_assistant.Nombre, ' ', e_assistant.Paterno, ' ', e_assistant.Materno)) AS assistant,
-        clean_spaces(CONCAT(e_helper.Nombre, ' ', e_helper.Paterno, ' ', e_helper.Materno)) AS helper,
         r.Folio AS sales_folio,
         r.Fecha AS date,
         r.Hora_Entrega AS hour,
@@ -121,18 +117,8 @@ class SalesWithDetail {
         ON pe.Id_Punto_Entrega = r.Id_Punto_Entrega
       INNER JOIN Rutas_Equipos_Operadores reo
         ON reo.Id_Ruta_Equipo_Operador = r.Id_Ruta_Equipo_Operador
-      INNER JOIN Rutas_Operadores ro
-        ON ro.Id_Ruta_Operador = reo.Id_Ruta_Operador
-      INNER JOIN Rutas_Operadores_Detalles rod
-        ON (rod.Id_Ruta_Operador = ro.Id_Ruta_Operador AND rod.Id_Ruta = reo.Id_Ruta)
-      INNER JOIN Empleados e_operator
-        ON e_operator.Id_Empleado = rod.Id_Operador
-      LEFT JOIN Empleados e_assistant
-        ON e_assistant.Id_Empleado = rod.Id_Ayudante
-      LEFT JOIN Empleados e_helper
-        ON e_helper.Id_Empleado = rod.Id_Auxiliar
       INNER JOIN Rutas ru
-        ON ru.Id_Ruta = rod.Id_Ruta
+        ON ru.Id_Ruta = reo.Id_Ruta
       INNER JOIN Tipos_Producto tp
         ON tp.Id_Tipo_Producto = p.Id_Tipo_Producto
       WHERE r.BanEliminar = 0
@@ -141,15 +127,6 @@ class SalesWithDetail {
         AND rd.BanEliminar = 0
         AND pr.Id_Sucursal = r.Id_Sucursal
         AND reo.BanEliminar = 0
-        AND rod.BanEliminar = 0
-        AND e_operator.Activo = 1
-        AND e_operator.BanEliminar = 0
-        AND IF(e_assistant.Id_Empleado, e_assistant.Activo = 1, TRUE)
-        AND IF(e_assistant.Id_Empleado, e_assistant.BanEliminar = 0, TRUE)
-        AND IF(e_helper.Id_Empleado, e_helper.Activo = 1, TRUE)
-        AND IF(e_helper.Id_Empleado, e_helper.BanEliminar = 0, TRUE)
-        AND ru.Nombre_Ruta NOT LIKE '%PISO%'
-      ORDER BY r.Id_Sucursal, r.Fecha, r.Id_Cliente, rd.Id_Remision_Detalle
     `, {
       replacements: {
         initDate,
