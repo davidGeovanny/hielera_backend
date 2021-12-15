@@ -16,6 +16,7 @@ class SalesWithDetail {
         clean_spaces(CONCAT(e_operator.Nombre, ' ', e_operator.Paterno, ' ', e_operator.Materno)) AS operator,
         clean_spaces(CONCAT(e_assistant.Nombre, ' ', e_assistant.Paterno, ' ', e_assistant.Materno)) AS assistant,
         clean_spaces(CONCAT(e_helper.Nombre, ' ', e_helper.Paterno, ' ', e_helper.Materno)) AS helper,
+        IF(rod.Chofer_Ayudante = 1, 1, 0) AS is_assistant_operator,
         r.Folio AS sales_folio,
         r.Fecha AS date,
         r.Hora_Entrega AS hour,
@@ -81,7 +82,7 @@ class SalesWithDetail {
     });
   }
 
-  getSales( initDate = '2021-11-03', finalDate = '2021-11-03' ) {
+  getSales( initDate = '2021-01-01', finalDate = '2021-01-01' ) {
     /** Take care not print in window or postman, because displaying all raws can be resource intensive  */
     return db.query(`
       SELECT 
