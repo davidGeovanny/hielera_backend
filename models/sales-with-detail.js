@@ -66,6 +66,7 @@ class SalesWithDetail {
         AND rd.BanEliminar = 0
         AND pr.Id_Sucursal = r.Id_Sucursal
         AND reo.BanEliminar = 0
+        AND ro.BanEliminar = 0
         AND rod.BanEliminar = 0
         AND e_operator.Activo = 1
         AND e_operator.BanEliminar = 0
