@@ -10,6 +10,7 @@ class Server {
     this.paths = {
       cache: '/api/cache',
       sale:  '/api/sales',
+      deliveryPoint: '/api/delivery-points',
     };
 
     /** DB connection */
@@ -41,6 +42,7 @@ class Server {
   routes() {
     this.app.use( this.paths.cache, require('../routes/cache') );
     this.app.use( this.paths.sale,  require('../routes/sales') );
+    this.app.use( this.paths.deliveryPoint,  require('../routes/delivery-point') );
   }
   
   listen() {
